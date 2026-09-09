@@ -1,0 +1,34 @@
+# Blueprint assets catalog — independently versioned packs.
+schema_version: 1
+name: assets-blueprint
+description: Static resources for the Blueprint CLI (templates, harness, prompts, examples).
+base_url: https://github.com/krerapus/assets-blueprint/releases/download
+
+packs:
+  - name: core
+    path: packs/core
+    version: 1.4.0
+    cli_compat: ">=1.4.0 <2.0.0"
+    description: Harness commands, rules, skills, templates, and blueprint profiles.
+    release_asset: core-v1.4.0.tar.gz
+
+  - name: prompts
+    path: packs/prompts
+    version: 1.4.0
+    cli_compat: ">=1.4.0 <2.0.0"
+    description: Prompt library (system + command prompts).
+    release_asset: prompts-v1.4.0.tar.gz
+
+  - name: memories
+    path: packs/memories
+    version: 1.4.0
+    cli_compat: ">=1.4.0 <2.0.0"
+    description: Root memory skeleton templates (PLANNING, HOTCACHE, etc.).
+    release_asset: memories-v1.4.0.tar.gz
+
+  - name: examples
+    path: packs/examples
+    version: 1.4.0
+    cli_compat: ">=1.4.0 <2.0.0"
+    description: Consumer examples and sample state files.
+    release_asset: examples-v1.4.0.tar.gz

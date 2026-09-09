@@ -1,0 +1,65 @@
+name: Assets Release
+
+on:
+  push:
+    tags:
+      - "core-v*"
+      - "prompts-v*"
+      - "memories-v*"
+      - "examples-v*"
+  workflow_dispatch:
+    inputs:
+      pack:
+        description: Pack name (core, prompts, memories, examples)
+        required: true
+        type: choice
+        options:
+          - core
+          - prompts
+          - memories
+          - examples
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve pack from tag or input
+        id: meta
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            PACK="${{ inputs.pack }}"
+          else
+            REF="${GITHUB_REF_NAME}"
+            PACK="${REF%%-v*}"
+          fi
+          echo "pack=${PACK}" >> "$GITHUB_OUTPUT"
+          VER="$(grep -E '^version:' "packs/${PACK}/pack.yaml" | head -1 | awk '{print $2}' | tr -d '"')"
+          echo "version=${VER}" >> "$GITHUB_OUTPUT"
+          echo "tag=${PACK}-v${VER}" >> "$GITHUB_OUTPUT"
+
+      - name: Validate pack
+        run: |
+          test -f "packs/${{ steps.meta.outputs.pack }}/pack.yaml"
+          test -n "${{ steps.meta.outputs.version }}"
+
+      - name: Package
+        run: |
+          chmod +x scripts/package-pack.sh
+          ./scripts/package-pack.sh "${{ steps.meta.outputs.pack }}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: ${{ steps.meta.outputs.pack }} ${{ steps.meta.outputs.version }}
+          files: |
+            dist/${{ steps.meta.outputs.pack }}-v${{ steps.meta.outputs.version }}.tar.gz
+            dist/${{ steps.meta.outputs.pack }}-v${{ steps.meta.outputs.version }}.tar.gz.sha256
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
