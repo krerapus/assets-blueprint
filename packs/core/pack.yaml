@@ -1,0 +1,16 @@
+schema_version: 1
+name: core
+version: 1.4.0
+cli_compat: ">=1.4.0 <2.0.0"
+description: Core harness — commands, rules, skills, templates, blueprint profiles.
+contents:
+  - harness/
+  - templates/
+  - blueprints/
+  - manifest.yaml
+  - VERSION
+provides:
+  harness: true
+  templates: true
+  blueprints: true
+channel: stable

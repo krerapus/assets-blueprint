@@ -1,0 +1,10 @@
+schema_version: 1
+name: prompts
+version: 1.4.0
+cli_compat: ">=1.4.0 <2.0.0"
+description: Prompt library for agent system and slash-command drafting.
+contents:
+  - prompts/
+provides:
+  prompts: true
+channel: stable
