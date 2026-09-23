@@ -108,11 +108,21 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, branch/commit/PR conventions, 
 | `memories` | `packs/memories` | Root memory skeletons |
 | `examples` | `packs/examples` | Consumer examples |
 
+## Docs
+
+| Document | Contents |
+|---|---|
+| [docs/skills.md](docs/skills.md) | Skill inventory (`packs/core/harness/skills/`) |
+| [docs/standards/skill-naming.md](docs/standards/skill-naming.md) | Skill naming standard |
+
 ## Layout
 
 ```text
 assets-blueprint/
 ├── catalog.yaml
+├── docs/
+│   ├── skills.md
+│   └── standards/skill-naming.md
 ├── packs/
 │   ├── core/
 │   ├── prompts/

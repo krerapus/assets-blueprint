@@ -1,6 +1,6 @@
 schema_version: 1
 name: core
-version: 1.4.0
+version: 1.4.1
 cli_compat: ">=1.4.0 <2.0.0"
 description: Core harness — commands, rules, skills, templates, blueprint profiles.
 contents:
