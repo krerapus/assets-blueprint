@@ -64,7 +64,7 @@ Check available MCPs - if useful for research (searching docs, finding similar s
 
 Before choosing a `name`, apply the **Skill naming gate** (required for this package):
 
-1. Read and follow [`docs/standards/skill-naming.md`](../../../docs/standards/skill-naming.md).
+1. Read and follow [`docs/standards/skill-naming.md`](../../../../../docs/standards/skill-naming.md).
 2. Format MUST be `<action>-<object>[-<context>]` (lowercase, hyphens only).
 3. MUST NOT encode Agent role, model/provider, client/runtime, version, or redundant suffixes (`-skill`, `-agent`, …).
 4. Directory name MUST match frontmatter `name`.

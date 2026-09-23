@@ -20,6 +20,8 @@ Orientation:
 1. [README.md](README.md) — how packs flow into the CLI
 2. [`catalog.yaml`](catalog.yaml) — published pack versions
 3. `packs/<name>/pack.yaml` — per-pack semver and `cli_compat`
+4. [docs/skills.md](docs/skills.md) — skill inventory
+5. [docs/standards/skill-naming.md](docs/standards/skill-naming.md) — required naming gate before new skills
 
 ## How this repo works
 
@@ -70,6 +72,14 @@ Checklist for a pack release:
 6. Confirm the GitHub Release attaches the tarball and checksum.
 7. From a CLI install: `blueprint assets update <name>` (or clear cache and `install`) and smoke-test projection.
 
+## Skills
+
+Before adding or substantially rewriting a skill under `packs/core/harness/skills/`:
+
+1. Use `/skill-creator` (or follow that skill’s playbook).
+2. Pass [docs/standards/skill-naming.md](docs/standards/skill-naming.md).
+3. Update [docs/skills.md](docs/skills.md) and `packs/core/manifest.yaml` in the same PR when the inventory changes.
+
 ## Testing / review expectations
 
 - `pack.yaml` and `catalog.yaml` stay in sync for any version bump
@@ -77,5 +87,6 @@ Checklist for a pack release:
 - No placeholder or invented checksums in docs or release notes
 - Prefer composition inside packs over forking entire profiles
 - Clarity and backward-compatible pack defaults unless the PR documents a break
+- New skills follow the naming standard and appear in `docs/skills.md`
 
 Questions welcome via GitHub Issues.
