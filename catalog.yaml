@@ -7,10 +7,10 @@ base_url: https://github.com/krerapus/assets-blueprint/releases/download
 packs:
   - name: core
     path: packs/core
-    version: 1.5.0
+    version: 1.5.1
     cli_compat: ">=1.4.0 <2.0.0"
     description: Harness commands, rules, skills, templates, and blueprint profiles.
-    release_asset: core-v1.5.0.tar.gz
+    release_asset: core-v1.5.1.tar.gz
 
   - name: prompts
     path: packs/prompts

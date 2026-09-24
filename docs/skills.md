@@ -103,3 +103,7 @@ Treat it as **authoring infrastructure**, not coding policy baked into builds.
 ### `build-prototype` (+ `LOGIC.md`, `UI.md`)
 
 **Intent:** Throwaway HTML/logic or toggleable UI prototypes to answer a design question before production code.
+
+### `teach-topic` (+ mission/lesson format docs)
+
+**Intent:** Multi-session tutoring in a stateful teaching workspace (`MISSION.md`, `lessons/*.html`, `learning-records/`, `RESOURCES.md`). Ships with **`disable-model-invocation`**. Adapted from Matt Pocock `productivity/teach` (MIT). Keep the workspace out of harness memory files.

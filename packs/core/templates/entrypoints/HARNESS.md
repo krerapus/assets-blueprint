@@ -82,6 +82,7 @@ Skills live under the active runtime (`<runtime>/skills/`). Prefer matching a sk
 | Merge/rebase conflicts in progress | `/resolve-merge-conflicts` | Prefer when conflicts block progress; finish the operation (no `--abort` unless asked). |
 | Cited research into the repo | `/research-topic` | Prefer when answering a design/tech question with primary sources filed as Markdown. |
 | Throwaway HTML/UI prototype | `/build-prototype` | Prefer when exploring logic/UX options before production code. |
+| Multi-session tutoring / learn a topic | `/teach-topic` | **Opt-in** (`disable-model-invocation`). Uses a dedicated teaching workspace (`MISSION.md`, `lessons/`, …) — not Blueprint `PLANNING.md` / `LEARNING.md`. |
 
 Pairing: `/ponytail` shrinks what you build; `/i-have-adhd` shapes how replies are written. Suggest both when a coding task is also multi-step and easy to lose track of — still ask before enabling ADHD mode.
 
