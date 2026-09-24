@@ -65,7 +65,7 @@ Skills live under the active runtime (`<runtime>/skills/`). Prefer matching a sk
 | Multi-step fix, setup, or “what do I do next?” | `/i-have-adhd` | **Ask once:** “Enable ADHD-friendly output for this session?” Opt-in only (`disable-model-invocation`). Off: `stop adhd mode` / `normal mode`. |
 | Implement, fix, refactor, or choose a library | `/ponytail` | **Prefer on coding tasks** (or ask once). Levels: `lite` \| `full` (default) \| `ultra`. Off: `stop ponytail` / `normal mode`. |
 | Diff feels bloated / over-engineered | `/ponytail-review` | **Suggest after implementation** before ship. |
-| Whole-repo complexity hunt | `/ponytail-audit` | **Ask before** a large audit. |
+| Whole-repo complexity hunt | `/ponytail-audit` | **Ask before** a large standalone audit. **Exception:** when `/refactor-code` is active, run audit first for discovery (no separate ask). |
 | Deferred `ponytail:` shortcuts piling up | `/ponytail-debt` | Suggest when harvesting “later” notes. |
 | Need ponytail command cheat sheet | `/ponytail-help` | On request. |
 | Executing / updating `PLANNING.md` batches | `task-execution` | Use when work must leave PLANNING / DECISIONS / RUN_LOG breadcrumbs. |
@@ -74,11 +74,11 @@ Skills live under the active runtime (`<runtime>/skills/`). Prefer matching a sk
 | Creating or tuning a skill | `skill-creator` | Opt-in / explicit invoke. |
 | Generate Testiny QA CSV for a change | `generate-test-cases` | Opt-in / explicit invoke (`disable-model-invocation`). Writes `.testiny/testcases-<JIRA>.csv`. |
 | Sync OpenAPI YAML / API response examples with routers | `update-api-docs` | Prefer when `app/routers/` or `docs/api/openapi.yaml` changes; or when asked to refresh swagger/OpenAPI/examples. |
-| Simplify / dedupe / modularity refactor | `refactor-code` + `/ponytail` | **Required pairing:** when `/refactor-code` (or refactor-code) is invoked, **must** also enable `/ponytail` (default `full`). Applies to any programming language. Do not run refactor-code alone. Prefer `/ponytail-review` on the resulting diff. |
+| Simplify / dedupe / modularity refactor | `refactor-code` + `/ponytail-audit` + `/ponytail` | **Required order:** when `/refactor-code` is invoked, (1) run `/ponytail-audit` first for discovery, (2) enable `/ponytail` (default `full`), then propose increments. Prefer `/ponytail-review` on the resulting diff. Do not run refactor-code alone. |
 
 Pairing: `/ponytail` shrinks what you build; `/i-have-adhd` shapes how replies are written. Suggest both when a coding task is also multi-step and easy to lose track of — still ask before enabling ADHD mode.
 
-**Required:** `/refactor-code` ⇒ `/ponytail` (always). If the user invokes refactor-code without ponytail, enable ponytail for the session (or ask once, then enable) before continuing the refactor.
+**Required:** `/refactor-code` ⇒ `/ponytail-audit` (discover first) then `/ponytail` (always). Skip audit only if the user explicitly opts out. If refactor-code is invoked without ponytail, enable ponytail for the session (or ask once, then enable) before proposing edits.
 
 ## Memory harness
 

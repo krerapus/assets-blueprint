@@ -1,6 +1,6 @@
 ---
 name: refactor-code
-description: Guides codebase refactoring for simplicity, reuse, and safety while preserving behavior across any programming language, and applies paired Test Strategy guidance. When this skill is used, also enable /ponytail (required). Use when the user asks to refactor, simplify, deduplicate, reduce complexity, improve modularity, invokes refactor-code, or applies this repository refactor skill; human applies changes—assistant analyzes and proposes only.
+description: Guides codebase refactoring for simplicity, reuse, and safety while preserving behavior across any programming language, and applies paired Test Strategy guidance. When this skill is used, run /ponytail-audit first for discovery, then enable /ponytail (both required). Use when the user asks to refactor, simplify, deduplicate, reduce complexity, improve modularity, invokes refactor-code, or applies this repository refactor skill; human applies changes—assistant analyzes and proposes only.
 disable-model-invocation: true
 ---
 
@@ -10,15 +10,33 @@ disable-model-invocation: true
 
 Whenever this skill is active, read and follow [test-strategy.md](test-strategy.md) in this same folder before advising or planning refactors. Treat it as binding for test priorities, safety workflow, and documentation expectations alongside the body below.
 
+## Sub-skill: Ponytail audit first (required discovery)
+
+Whenever this skill is activated, **before** proposing refactor steps, run `/ponytail-audit` (follow that skill) to discover over-engineering: a ranked delete/simplify list for the relevant scope.
+
+- Default scope: whole repo (ponytail-audit default).
+- If the user already named a path, package, or subsystem, constrain the audit hunt to that area and still use the same tags/output format.
+- Present the audit findings briefly, then ask which cuts to pursue (or confirm the top-ranked set) before drafting refactor increments.
+- Do not skip the audit unless the user explicitly says to skip discovery (e.g. “skip audit”, “refactor only”).
+- Audit lists findings only — it does not apply fixes. This skill still proposes; the human applies.
+
 ## Sub-skill: Ponytail (required)
 
 Whenever this skill is active, also enable and follow `/ponytail` (default intensity `full`) for the same session. Refactor proposals must pass the ponytail ladder (YAGNI → reuse → stdlib → native → existing deps → one line → minimum). Do not run `refactor-code` without ponytail. After a proposed diff, prefer `/ponytail-review`.
 
-pefer execution by human. not agent or sub-agent.
+Prefer execution by human, not agent or sub-agent.
 
 - The human edits the codebase, runs tests, and owns merges.
 - The assistant analyzes architecture, names hotspots, proposes incremental steps, drafts small reviewable diffs, and reviews changes.
 - Do not launch Task tool, sub-agents, or unattended bulk refactors unless the user explicitly asks.
+
+## Required session order
+
+1. `/ponytail-audit` — discover what to cut/simplify
+2. Confirm target findings with the user (unless they already picked)
+3. Enable `/ponytail` (`full` default)
+4. Propose incremental refactors (this skill + test-strategy); human applies
+5. `/ponytail-review` on the resulting diff before ship
 
 # Refactor Skill Prompt — Codebase Simplification
 

@@ -29,7 +29,7 @@ Use whenever execution must leave audit breadcrumbs—not casual Q&A.
 
 **Intent:** Opinionated simplification playbook—flatten complexity, extract duplication thoughtfully, preserve behavior (any programming language). Ships with **`disable-model-invocation`** so tooling does not auto-load it—invoke deliberately when refactoring.
 
-**Required pairing:** when active, also enable `/ponytail` (see HARNESS skill use cases). Companion **test-strategy** lays out regression priorities and safety rails. The workflow expects humans to apply risky edits/tests while the assistant analyzes and proposes increments.
+**Required order:** (1) run `/ponytail-audit` first to discover over-engineering, (2) enable `/ponytail` (see HARNESS skill use cases), then propose increments. Prefer `/ponytail-review` on the resulting diff. Companion **test-strategy** lays out regression priorities and safety rails. The workflow expects humans to apply risky edits/tests while the assistant analyzes and proposes increments.
 
 ## `docs-style`
 
