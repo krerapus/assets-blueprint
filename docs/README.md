@@ -6,3 +6,4 @@ Pack-content docs for **assets-blueprint**. CLI / projection / release docs live
 |---|---|
 | [skills.md](skills.md) | Skill inventory (`packs/core/harness/skills/`) |
 | [standards/skill-naming.md](standards/skill-naming.md) | Skill naming (`<action>-<object>[-<context>]`) |
+| [profiles.md](profiles.md) | Install profiles: `default` / `engineering` / `product` + how to switch |
