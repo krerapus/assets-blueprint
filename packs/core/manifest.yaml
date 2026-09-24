@@ -17,10 +17,10 @@ blueprints:
     extends: default
     description: Engineering workflows — commit/review prompts and optional forge profiles.
 
-  - name: startup
-    path: blueprints/startup
+  - name: product
+    path: blueprints/product
     extends: default
-    description: Lightweight startup profile — planning + PRD/ADR templates.
+    description: Product discovery — planning + PRD/ADR templates.
 
 harness:
   entrypoint: HARNESS.md
@@ -49,6 +49,14 @@ harness:
     - ponytail-help
     - generate-test-cases
     - update-api-docs
+    - practice-tdd
+    - diagnose-bugs
+    - review-diff
+    - design-modules
+    - resolve-merge-conflicts
+    - research-topic
+    - build-prototype
+    - teach-topic
 
 agents:
   entrypoint: AGENTS.md

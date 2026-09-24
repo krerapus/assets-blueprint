@@ -29,7 +29,7 @@ Use whenever execution must leave audit breadcrumbs—not casual Q&A.
 
 **Intent:** Opinionated simplification playbook—flatten complexity, extract duplication thoughtfully, preserve behavior (any programming language). Ships with **`disable-model-invocation`** so tooling does not auto-load it—invoke deliberately when refactoring.
 
-**Required pairing:** when active, also enable `/ponytail` (see HARNESS skill use cases). Companion **test-strategy** lays out regression priorities and safety rails. The workflow expects humans to apply risky edits/tests while the assistant analyzes and proposes increments.
+**Required order:** (1) run `/ponytail-audit` first to discover over-engineering, (2) enable `/ponytail` (see HARNESS skill use cases), then propose increments. Prefer `/ponytail-review` on the resulting diff. Companion **test-strategy** lays out regression priorities and safety rails. The workflow expects humans to apply risky edits/tests while the assistant analyzes and proposes increments.
 
 ## `docs-style`
 
@@ -73,3 +73,37 @@ Vendored from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponyta
 - tightening descriptions (“slightly pushy” wording) so retrieval triggers reliably.
 
 Treat it as **authoring infrastructure**, not coding policy baked into builds.
+
+## Wave 1 (adapted from mattpocock/skills, MIT)
+
+### `practice-tdd` (+ `tests.md`, `mocking.md`)
+
+**Intent:** Red → green TDD at pre-agreed seams. Read `ARCHITECTURE.md` / ADRs for domain vocabulary when present.
+
+### `diagnose-bugs` (+ `scripts/hitl-loop.template.sh`)
+
+**Intent:** Hard-bug diagnosis: build a red feedback loop → minimise → hypothesise → instrument → fix → regression-test.
+
+### `review-diff`
+
+**Intent:** Two-axis review (Standards + Spec) of `git diff <fixed-point>...HEAD` via parallel sub-agents. Spec prefers `PLANNING.md` / user path / PR. Optional follow-up: `/ponytail-review`.
+
+### `design-modules` (+ `DEEPENING.md`, `DESIGN-IT-TWICE.md`)
+
+**Intent:** Deep-module vocabulary (module, interface, depth, seam, adapter). Complements `/ponytail` rather than replacing it.
+
+### `resolve-merge-conflicts`
+
+**Intent:** Resolve in-progress merge/rebase conflicts hunk by hunk by intent; finish the operation unless the user asks to abort.
+
+### `research-topic`
+
+**Intent:** Investigate against primary sources; write cited Markdown findings into the repo.
+
+### `build-prototype` (+ `LOGIC.md`, `UI.md`)
+
+**Intent:** Throwaway HTML/logic or toggleable UI prototypes to answer a design question before production code.
+
+### `teach-topic` (+ mission/lesson format docs)
+
+**Intent:** Multi-session tutoring in a stateful teaching workspace (`MISSION.md`, `lessons/*.html`, `learning-records/`, `RESOURCES.md`). Ships with **`disable-model-invocation`**. Adapted from Matt Pocock `productivity/teach` (MIT). Keep the workspace out of harness memory files.
