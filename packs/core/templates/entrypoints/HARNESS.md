@@ -75,6 +75,13 @@ Skills live under the active runtime (`<runtime>/skills/`). Prefer matching a sk
 | Generate Testiny QA CSV for a change | `generate-test-cases` | Opt-in / explicit invoke (`disable-model-invocation`). Writes `.testiny/testcases-<JIRA>.csv`. |
 | Sync OpenAPI YAML / API response examples with routers | `update-api-docs` | Prefer when `app/routers/` or `docs/api/openapi.yaml` changes; or when asked to refresh swagger/OpenAPI/examples. |
 | Simplify / dedupe / modularity refactor | `refactor-code` + `/ponytail-audit` + `/ponytail` | **Required order:** when `/refactor-code` is invoked, (1) run `/ponytail-audit` first for discovery, (2) enable `/ponytail` (default `full`), then propose increments. Prefer `/ponytail-review` on the resulting diff. Do not run refactor-code alone. |
+| Build or fix test-first | `/practice-tdd` | Prefer when user asks for TDD / red-green-refactor; agree seams first. Optional: `generate-test-cases` for QA CSV. |
+| Hard bug / perf diagnosis | `/diagnose-bugs` | Prefer when debugging without a clear repro; build a red feedback loop before hypothesising. |
+| Review branch/PR vs standards + spec | `/review-diff` | Prefer for two-axis Standards/Spec review since a fixed point; Spec from `PLANNING.md` / user path / PR. May suggest `/ponytail-review` after. |
+| Design deep modules / seams | `/design-modules` | Prefer when shaping interfaces, deepening shallow modules, or naming seams; complements `/ponytail`. |
+| Merge/rebase conflicts in progress | `/resolve-merge-conflicts` | Prefer when conflicts block progress; finish the operation (no `--abort` unless asked). |
+| Cited research into the repo | `/research-topic` | Prefer when answering a design/tech question with primary sources filed as Markdown. |
+| Throwaway HTML/UI prototype | `/build-prototype` | Prefer when exploring logic/UX options before production code. |
 
 Pairing: `/ponytail` shrinks what you build; `/i-have-adhd` shapes how replies are written. Suggest both when a coding task is also multi-step and easy to lose track of — still ask before enabling ADHD mode.
 

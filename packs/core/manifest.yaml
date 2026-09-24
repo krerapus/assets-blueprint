@@ -49,6 +49,13 @@ harness:
     - ponytail-help
     - generate-test-cases
     - update-api-docs
+    - practice-tdd
+    - diagnose-bugs
+    - review-diff
+    - design-modules
+    - resolve-merge-conflicts
+    - research-topic
+    - build-prototype
 
 agents:
   entrypoint: AGENTS.md

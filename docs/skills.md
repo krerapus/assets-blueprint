@@ -73,3 +73,33 @@ Vendored from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponyta
 - tightening descriptions (“slightly pushy” wording) so retrieval triggers reliably.
 
 Treat it as **authoring infrastructure**, not coding policy baked into builds.
+
+## Wave 1 (adapted from mattpocock/skills, MIT)
+
+### `practice-tdd` (+ `tests.md`, `mocking.md`)
+
+**Intent:** Red → green TDD at pre-agreed seams. Read `ARCHITECTURE.md` / ADRs for domain vocabulary when present.
+
+### `diagnose-bugs` (+ `scripts/hitl-loop.template.sh`)
+
+**Intent:** Hard-bug diagnosis: build a red feedback loop → minimise → hypothesise → instrument → fix → regression-test.
+
+### `review-diff`
+
+**Intent:** Two-axis review (Standards + Spec) of `git diff <fixed-point>...HEAD` via parallel sub-agents. Spec prefers `PLANNING.md` / user path / PR. Optional follow-up: `/ponytail-review`.
+
+### `design-modules` (+ `DEEPENING.md`, `DESIGN-IT-TWICE.md`)
+
+**Intent:** Deep-module vocabulary (module, interface, depth, seam, adapter). Complements `/ponytail` rather than replacing it.
+
+### `resolve-merge-conflicts`
+
+**Intent:** Resolve in-progress merge/rebase conflicts hunk by hunk by intent; finish the operation unless the user asks to abort.
+
+### `research-topic`
+
+**Intent:** Investigate against primary sources; write cited Markdown findings into the repo.
+
+### `build-prototype` (+ `LOGIC.md`, `UI.md`)
+
+**Intent:** Throwaway HTML/logic or toggleable UI prototypes to answer a design question before production code.
