@@ -19,7 +19,13 @@ if [[ ! -f "${PACK_DIR}/pack.yaml" ]]; then
   exit 1
 fi
 
+# Optional second arg overrides version in the artifact name (for pre-releases).
+# Usage: package-pack.sh <pack-name> [version-override]
+VER_OVERRIDE="${2:-}"
 VER="$(grep -E '^version:' "${PACK_DIR}/pack.yaml" | head -1 | awk '{print $2}' | tr -d '"')"
+if [[ -n "$VER_OVERRIDE" ]]; then
+  VER="$VER_OVERRIDE"
+fi
 if [[ -z "$VER" ]]; then
   echo "error: could not read version from pack.yaml" >&2
   exit 1

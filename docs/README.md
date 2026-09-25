@@ -4,7 +4,7 @@ Pack-content docs for **assets-blueprint**. CLI / projection / release docs live
 
 | Document | Contents |
 |---|---|
-| [release-workflow.md](release-workflow.md) | **Human-triggered** pack release (Actions → Assets Release) |
+| [release-workflow.md](release-workflow.md) | **Human-triggered** pack pre-release → production |
 | [skills.md](skills.md) | Skill inventory (`packs/core/harness/skills/`) |
 | [standards/skill-naming.md](standards/skill-naming.md) | Skill naming (`<action>-<object>[-<context>]`) |
 | [profiles.md](profiles.md) | Install profiles: `default` / `engineering` / `product` + how to switch |

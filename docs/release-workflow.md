@@ -1,29 +1,35 @@
 # Pack release workflow (human-triggered)
 
-Pack releases are **manual**: GitHub Actions → **Assets Release** → Run workflow.
+Two manual Actions — **do not** release by pushing a tag alone.
 
-Pushing a git tag does **not** start a release. The workflow creates `<pack>-v<version>` if needed and publishes the pack tarball.
+1. **Assets Pre-release** — non-production (`core-v1.5.2-rc.1`, GitHub Pre-release)
+2. **Assets Release** — production (`core-v1.5.2`)
 
-This does **not** update the Homebrew Formula. Formula updates come from the CLI **CLI Release** workflow only.
+Neither updates the Homebrew Formula. Formula updates come from **CLI Release** only.
 
-## Steps
+## Pre-release (test)
 
-1. Merge version bumps to `master` (`packs/<pack>/pack.yaml`, `packs/<pack>/VERSION` if present, `catalog.yaml`).
-2. Open [Actions → Assets Release](https://github.com/krerapus/assets-blueprint/actions/workflows/assets-release.yml).
-3. Run on `master` with:
-   - **pack** — which pack to publish
-   - **confirm_version** — must match `pack.yaml` / `catalog.yaml`
-   - **dry_run** — optional package-only check
-4. Verify the GitHub Release asset `\<pack\>-v\<ver\>.tar.gz`.
+[Actions → Assets Pre-release](https://github.com/krerapus/assets-blueprint/actions/workflows/assets-prerelease.yml)
+
+```bash
+gh workflow run "Assets Pre-release" --repo krerapus/assets-blueprint \
+  -f pack=core -f confirm_version=1.5.2 -f pre_label=rc.1 -f dry_run=false
+```
+
+## Production
+
+[Actions → Assets Release](https://github.com/krerapus/assets-blueprint/actions/workflows/assets-release.yml)
 
 ```bash
 gh workflow run "Assets Release" --repo krerapus/assets-blueprint \
-  -f pack=core -f confirm_version=1.5.2 -f dry_run=false
+  -f pack=core -f confirm_version=1.5.2 -f tested_pre_label=rc.1 -f dry_run=false
 ```
 
 ## Cross-repo order
 
-1. Publish packs here (at least `core` when harness content changed).
-2. Run **CLI Release** on [agent-harness-blueprint](https://github.com/krerapus/agent-harness-blueprint/actions/workflows/cli-release.yml) so the Formula tracks the new CLI (if any).
+1. Assets Pre-release → test  
+2. Assets Release  
+3. CLI Pre-release → test  
+4. CLI Release (latest + Formula)
 
-Full matrix and Formula details: [CLI release-workflow.md](https://github.com/krerapus/agent-harness-blueprint/blob/master/docs/release-workflow.md).
+Full matrix: [CLI release-workflow.md](https://github.com/krerapus/agent-harness-blueprint/blob/master/docs/release-workflow.md).

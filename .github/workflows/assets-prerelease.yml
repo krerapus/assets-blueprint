@@ -1,0 +1,115 @@
+name: Assets Pre-release
+
+# Human-triggered non-production pack build for testing.
+# Creates GitHub pre-release tag <pack>-vVERSION-<label> (e.g. core-v1.5.2-rc.1).
+# Does NOT mark latest. Does NOT update Homebrew Formula.
+# When ready, run "Assets Release" for the production pack tag.
+on:
+  workflow_dispatch:
+    inputs:
+      pack:
+        description: Pack name
+        required: true
+        type: choice
+        options:
+          - core
+          - prompts
+          - memories
+          - examples
+      confirm_version:
+        description: "Type pack version from packs/<pack>/pack.yaml (e.g. 1.5.2)"
+        required: true
+        type: string
+      pre_label:
+        description: "Pre-release label (e.g. rc.1) → tag <pack>-vVERSION-label"
+        required: true
+        type: string
+        default: "rc.1"
+      dry_run:
+        description: "Package + validate only (skip tag and GitHub pre-release)"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: assets-prerelease-${{ inputs.pack }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve pre-release version
+        id: meta
+        run: |
+          set -euo pipefail
+          PACK="${{ inputs.pack }}"
+          test -f "packs/${PACK}/pack.yaml"
+          VER="$(grep -E '^version:' "packs/${PACK}/pack.yaml" | head -1 | awk '{print $2}' | tr -d '"')"
+          CONFIRM="${{ inputs.confirm_version }}"
+          LABEL="${{ inputs.pre_label }}"
+          LABEL="${LABEL#v}"
+          LABEL="${LABEL#-}"
+          if [[ "$CONFIRM" != "$VER" ]]; then
+            echo "error: confirm_version '$CONFIRM' != pack.yaml '$VER'" >&2
+            exit 1
+          fi
+          if [[ ! "$LABEL" =~ ^[A-Za-z0-9][A-Za-z0-9.-]*$ ]]; then
+            echo "error: invalid pre_label '$LABEL'" >&2
+            exit 1
+          fi
+          chmod +x scripts/check-catalog-version.sh
+          ./scripts/check-catalog-version.sh "$PACK" "$VER"
+          PRE="${VER}-${LABEL}"
+          TAG="${PACK}-v${PRE}"
+          echo "pack=${PACK}" >> "$GITHUB_OUTPUT"
+          echo "version=${VER}" >> "$GITHUB_OUTPUT"
+          echo "pre_version=${PRE}" >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "dry_run=${{ inputs.dry_run }}" >> "$GITHUB_OUTPUT"
+          echo "Validated pre-release ${TAG}"
+
+      - name: Package
+        run: |
+          chmod +x scripts/package-pack.sh
+          ./scripts/package-pack.sh "${{ steps.meta.outputs.pack }}" "${{ steps.meta.outputs.pre_version }}"
+          test -f "dist/${{ steps.meta.outputs.pack }}-v${{ steps.meta.outputs.pre_version }}.tar.gz"
+
+      - name: Ensure git tag and GitHub pre-release
+        if: steps.meta.outputs.dry_run != 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.meta.outputs.tag }}
+          PACK: ${{ steps.meta.outputs.pack }}
+          PRE: ${{ steps.meta.outputs.pre_version }}
+          VER: ${{ steps.meta.outputs.version }}
+        run: |
+          set -euo pipefail
+          git config user.name "blueprint-release-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists"
+          else
+            git tag -a "$TAG" -m "${PACK} ${PRE} (pre-release)"
+            git push origin "$TAG"
+          fi
+          ASSET="dist/${PACK}-v${PRE}.tar.gz"
+          SUM="${ASSET}.sha256"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ASSET" "$SUM" --clobber
+            gh release edit "$TAG" --prerelease --latest=false
+          else
+            gh release create "$TAG" "$ASSET" "$SUM" \
+              --title "${PACK} ${PRE} (pre-release)" \
+              --notes "Non-production pack for testing (base ${VER}). When ready, run **Assets Release** for ${PACK}-v${VER}." \
+              --prerelease \
+              --verify-tag
+          fi
+          echo "Pre-release $TAG OK"

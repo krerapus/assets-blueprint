@@ -1,7 +1,8 @@
 name: Assets Release
 
-# Human-triggered only (Actions → Assets Release → Run workflow).
-# Does not run on tag push. Creates pack GitHub Release + tag <pack>-v<ver>.
+# Human-triggered PRODUCTION pack release only.
+# Run "Assets Pre-release" first for non-production test builds.
+# Creates pack GitHub Release + tag <pack>-v<ver> as latest for that tag family.
 # Does NOT update the Homebrew Formula (Formula tracks CLI releases only).
 on:
   workflow_dispatch:
@@ -19,6 +20,11 @@ on:
         description: "Type pack version from packs/<pack>/pack.yaml to confirm (e.g. 1.5.2)"
         required: true
         type: string
+      tested_pre_label:
+        description: "Optional: pre-release label you already tested (e.g. rc.1)"
+        required: false
+        type: string
+        default: ""
       dry_run:
         description: "Package + validate only (skip tag and GitHub Release)"
         required: true
@@ -95,10 +101,21 @@ jobs:
           SUM="${ASSET}.sha256"
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "$ASSET" "$SUM" --clobber
+            gh release edit "$TAG" --latest --prerelease=false --title "${PACK} ${VER}"
           else
-            gh release create "$TAG" "$ASSET" "$SUM" \
-              --title "${PACK} ${VER}" \
-              --generate-notes \
-              --verify-tag
+            TESTED="${{ inputs.tested_pre_label }}"
+            if [[ -n "$TESTED" ]]; then
+              gh release create "$TAG" "$ASSET" "$SUM" \
+                --title "${PACK} ${VER}" \
+                --notes "Production pack release after pre-release testing (${TESTED})." \
+                --latest \
+                --verify-tag
+            else
+              gh release create "$TAG" "$ASSET" "$SUM" \
+                --title "${PACK} ${VER}" \
+                --generate-notes \
+                --latest \
+                --verify-tag
+            fi
           fi
           echo "Release $TAG OK"
