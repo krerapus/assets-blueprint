@@ -1,16 +1,14 @@
 name: Assets Release
 
+# Human-triggered PRODUCTION pack release only.
+# Run "Assets Pre-release" first for non-production test builds.
+# Creates pack GitHub Release + tag <pack>-v<ver> as latest for that tag family.
+# Does NOT update the Homebrew Formula (Formula tracks CLI releases only).
 on:
-  push:
-    tags:
-      - "core-v*"
-      - "prompts-v*"
-      - "memories-v*"
-      - "examples-v*"
   workflow_dispatch:
     inputs:
       pack:
-        description: Pack name (core, prompts, memories, examples)
+        description: Pack name
         required: true
         type: choice
         options:
@@ -18,48 +16,106 @@ on:
           - prompts
           - memories
           - examples
+      confirm_version:
+        description: "Type pack version from packs/<pack>/pack.yaml to confirm (e.g. 1.5.2)"
+        required: true
+        type: string
+      tested_pre_label:
+        description: "Optional: pre-release label you already tested (e.g. rc.1)"
+        required: false
+        type: string
+        default: ""
+      dry_run:
+        description: "Package + validate only (skip tag and GitHub Release)"
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: write
+
+concurrency:
+  group: assets-release-${{ inputs.pack }}
+  cancel-in-progress: false
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Resolve pack from tag or input
+      - name: Resolve pack version
         id: meta
         run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            PACK="${{ inputs.pack }}"
-          else
-            REF="${GITHUB_REF_NAME}"
-            PACK="${REF%%-v*}"
-          fi
-          echo "pack=${PACK}" >> "$GITHUB_OUTPUT"
+          set -euo pipefail
+          PACK="${{ inputs.pack }}"
+          test -f "packs/${PACK}/pack.yaml"
           VER="$(grep -E '^version:' "packs/${PACK}/pack.yaml" | head -1 | awk '{print $2}' | tr -d '"')"
+          CONFIRM="${{ inputs.confirm_version }}"
+          if [[ -z "$VER" ]]; then
+            echo "error: empty version in packs/${PACK}/pack.yaml" >&2
+            exit 1
+          fi
+          if [[ "$CONFIRM" != "$VER" ]]; then
+            echo "error: confirm_version '$CONFIRM' does not match pack.yaml '$VER'" >&2
+            exit 1
+          fi
+          chmod +x scripts/check-catalog-version.sh
+          ./scripts/check-catalog-version.sh "$PACK" "$VER"
+          TAG="${PACK}-v${VER}"
+          echo "pack=${PACK}" >> "$GITHUB_OUTPUT"
           echo "version=${VER}" >> "$GITHUB_OUTPUT"
-          echo "tag=${PACK}-v${VER}" >> "$GITHUB_OUTPUT"
-
-      - name: Validate pack
-        run: |
-          test -f "packs/${{ steps.meta.outputs.pack }}/pack.yaml"
-          test -n "${{ steps.meta.outputs.version }}"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "dry_run=${{ inputs.dry_run }}" >> "$GITHUB_OUTPUT"
+          echo "Validated ${TAG}"
 
       - name: Package
         run: |
           chmod +x scripts/package-pack.sh
           ./scripts/package-pack.sh "${{ steps.meta.outputs.pack }}"
+          test -f "dist/${{ steps.meta.outputs.pack }}-v${{ steps.meta.outputs.version }}.tar.gz"
+          test -f "dist/${{ steps.meta.outputs.pack }}-v${{ steps.meta.outputs.version }}.tar.gz.sha256"
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.meta.outputs.tag }}
-          name: ${{ steps.meta.outputs.pack }} ${{ steps.meta.outputs.version }}
-          files: |
-            dist/${{ steps.meta.outputs.pack }}-v${{ steps.meta.outputs.version }}.tar.gz
-            dist/${{ steps.meta.outputs.pack }}-v${{ steps.meta.outputs.version }}.tar.gz.sha256
-          generate_release_notes: true
+      - name: Ensure git tag and GitHub Release
+        if: steps.meta.outputs.dry_run != 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.meta.outputs.tag }}
+          PACK: ${{ steps.meta.outputs.pack }}
+          VER: ${{ steps.meta.outputs.version }}
+        run: |
+          set -euo pipefail
+          git config user.name "blueprint-release-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists"
+          else
+            git tag -a "$TAG" -m "${PACK} ${VER}"
+            git push origin "$TAG"
+            echo "Created and pushed tag $TAG"
+          fi
+
+          ASSET="dist/${PACK}-v${VER}.tar.gz"
+          SUM="${ASSET}.sha256"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ASSET" "$SUM" --clobber
+            gh release edit "$TAG" --latest --prerelease=false --title "${PACK} ${VER}"
+          else
+            TESTED="${{ inputs.tested_pre_label }}"
+            if [[ -n "$TESTED" ]]; then
+              gh release create "$TAG" "$ASSET" "$SUM" \
+                --title "${PACK} ${VER}" \
+                --notes "Production pack release after pre-release testing (${TESTED})." \
+                --latest \
+                --verify-tag
+            else
+              gh release create "$TAG" "$ASSET" "$SUM" \
+                --title "${PACK} ${VER}" \
+                --generate-notes \
+                --latest \
+                --verify-tag
+            fi
+          fi
+          echo "Release $TAG OK"
