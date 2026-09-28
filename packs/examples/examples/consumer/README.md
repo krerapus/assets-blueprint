@@ -11,7 +11,7 @@ From the consumer repo:
 ln -s /path/to/agent-harness-blueprint/blueprint /usr/local/bin/blueprint
 
 # Point at a checkout / submodule / vendored copy of this package
-/path/to/agent-harness-blueprint/blueprint init --target .
+/path/to/agent-harness-blueprint/blueprint install default --runtime all --target .
 
 /path/to/agent-harness-blueprint/blueprint install engineering \
   --overlay gitlab \
@@ -31,7 +31,7 @@ ln -s /path/to/agent-harness-blueprint/blueprint /usr/local/bin/blueprint
 
 ```yaml
 schema_version: 1
-source: https://github.com/Supparerk23/agent-harness-blueprint
+source: https://github.com/krerapus/agent-harness-blueprint
 version: <from package VERSION>   # written by CLI from ./VERSION
 blueprint: engineering
 overlay: gitlab
@@ -71,11 +71,11 @@ overrides:
 
 ## What gets copied vs what stays local
 
-**Copied (managed):** `.cursor/`, `.claude/`, and/or `.agents/` commands, skills, rules, and `templates/` (agent-workflow only) from selected blueprint; root `HARNESS.md` from `templates/entrypoints/` (`init` / `update`). Agent instruction files keep a managed harness reference block on `init` only.
+**Copied (managed):** `.cursor/`, `.claude/`, and/or `.agents/` commands, skills, rules, and `templates/` (agent-workflow only) from selected blueprint; root `HARNESS.md` from `templates/entrypoints/` (`install` / `update`). Agent instruction files keep a managed harness reference block on `install` only.
 
 Workflow docs such as `review-checklist.md` / `adr.md` land under `.cursor/templates/`, `.claude/templates/`, or `.agents/templates/` — not the project root.
 
-**Preserved (user-owned):** existing `AGENTS.md` / `agents.md` content outside managed markers; existing `CLAUDE.md` (never modified by init/update).
+**Preserved (user-owned):** existing `AGENTS.md` / `agents.md` content outside managed markers; existing `CLAUDE.md` (never modified by install/update).
 
 **Local state (created in the consumer, never part of the blueprint package):** `PLANNING.md`, `DECISIONS.md`, `RUN_LOG.md`, `HOTCACHE.md`, `LEARNING.md`, `ANTI-PATTERNS.md`, `ARCHITECTURE.md`.
 
@@ -83,4 +83,4 @@ Workflow docs such as `review-checklist.md` / `adr.md` land under `.cursor/templ
 
 **Session / history:** `.agent-blueprint/` holds resume state (gitignored). Run history lives in `$XDG_DATA_HOME/blueprint/history.jsonl` on the machine running the CLI.
 
-**Known targets:** the package-local `targets.json` next to the `blueprint` CLI records consumer paths + blueprint version after `init` / state writes. It is gitignored (`templates/gitignore` + package `.gitignore`) and must not be committed.
+**Known targets:** the package-local `targets.json` next to the `blueprint` CLI records consumer paths + blueprint version after `install` / state writes. It is gitignored (`templates/gitignore` + package `.gitignore`) and must not be committed.

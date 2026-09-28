@@ -1,9 +1,12 @@
 # PROPOSAL: Adopt Matt Pocock engineering skills into Blueprint
 
-**Status:** Wave 1 executed on `feature/wave1-matt-skills` (`core` 1.5.0). Wave 2 still deferred.  
+**Status:** Accepted  
+**Wave:** 1 executed (`core` 1.5.0 on `feature/wave1-matt-skills`). Wave 2 still deferred.  
 **Branch:** `feature/proposal-matt-pocock-skills`  
 **Target repo:** [`assets-blueprint`](https://github.com/krerapus/assets-blueprint) (skills SoT)  
 **Source:** [mattpocock/skills — engineering](https://github.com/mattpocock/skills/blob/main/skills/engineering/README.md) (MIT License, Copyright 2026 Matt Pocock)
+
+> Historical proposal. Wave 1 is complete; this file is retained for decision context, not as an active plan.
 
 ---
 
