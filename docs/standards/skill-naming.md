@@ -1,6 +1,6 @@
 # Skill naming standard
 
-Normative rules for skills under [`packs/core/harness/skills/`](../../packs/core/harness/skills/). Agents and humans MUST follow this when creating or renaming skills. Edit the pack here — the CLI may keep a legacy mirror under `agent-harness-blueprint/harness/skills/` (fallback only). See [architecture-split](https://github.com/krerapus/agent-harness-blueprint/blob/master/docs/architecture-split.md).
+Normative rules for skills under [`packs/core/harness/skills/`](../../packs/core/harness/skills/). Agents and humans MUST follow this when creating or renaming skills. Edit the pack here. See [architecture-split](https://github.com/krerapus/agent-harness-blueprint/blob/master/docs/architecture-split.md).
 
 ## Purpose
 

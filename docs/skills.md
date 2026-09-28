@@ -1,6 +1,6 @@
 # Skills
 
-Canonical inventory for skills under [`packs/core/harness/skills/`](../packs/core/harness/skills/). Edit skills here; bump `packs/core/pack.yaml` and root [`catalog.yaml`](../catalog.yaml). The CLI may keep a legacy mirror under `agent-harness-blueprint/harness/skills/` as fallback only — see [architecture-split](https://github.com/krerapus/agent-harness-blueprint/blob/master/docs/architecture-split.md).
+Canonical inventory for skills under [`packs/core/harness/skills/`](../packs/core/harness/skills/). Edit skills here; bump `packs/core/pack.yaml` and root [`catalog.yaml`](../catalog.yaml). Ownership vs CLI: [architecture-split](https://github.com/krerapus/agent-harness-blueprint/blob/master/docs/architecture-split.md).
 
 After `blueprint install`, the same folders appear under the consumer's `.cursor/skills/`, `.claude/skills/`, and/or `.agents/skills/` as `SKILL.md` plus optional bundles. They are **human-curated** procedures—load them when the task matches their scope.
 

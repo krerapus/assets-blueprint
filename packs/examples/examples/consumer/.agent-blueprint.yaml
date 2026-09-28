@@ -1,5 +1,5 @@
 # Example generated install state for a consuming project.
-# In a real repo this file is written by `blueprint install` / `init`.
+# In a real repo this file is written by `blueprint install`.
 # `version` is taken from the package ./VERSION file (single source of truth).
 # When source is a git URL, install/sync fetch a local cache then copy.
 schema_version: 1

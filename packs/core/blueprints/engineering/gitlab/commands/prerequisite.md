@@ -6,6 +6,15 @@ Shared setup for Cursor commands that use **GitLab** and **`glab`**. Do not use 
 
 Before any `glab` step in those commands, read this file and run `ensure_glab` in the repo root.
 
+**One-time (preferred):** from any shell, authenticate once for all blueprint projects:
+
+```bash
+blueprint auth login gitlab --hostname <host-from-origin>   # e.g. gitlab.com
+blueprint auth status
+```
+
+Tokens stay in `glab`'s credential store (user-level). Agents in every installed project reuse them.
+
 ---
 
 ## Shell helpers (run once per shell)
@@ -50,7 +59,8 @@ ensure_glab() {
   fi
   resolve_gitlab_from_origin
   if ! glab auth status --hostname "$GITLAB_HOST" >/dev/null 2>&1; then
-    echo "Run: glab auth login --hostname $GITLAB_HOST" >&2
+    echo "Run: blueprint auth login gitlab --hostname $GITLAB_HOST" >&2
+    echo "  (or: glab auth login --hostname $GITLAB_HOST)" >&2
     return 1
   fi
 }
