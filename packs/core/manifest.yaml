@@ -1,8 +1,7 @@
 # Shared Agent Blueprints — package manifest
 schema_version: 1
-# Package semver lives only in ./VERSION (single source of truth).
-# CLI resolves it via package_version(); do not duplicate a literal here.
-version_file: VERSION
+# Pack semver SoT: pack.yaml `version` (synced to root catalog.yaml on publish).
+# Consumer CLI state `version` comes from the CLI package ./VERSION at install/update.
 name: shared-agent-blueprints
 description: Reusable multi-agent harness, prompts, templates, and blueprint profiles for Cursor, Claude Code, and AGENTS.md-compatible tools.
 
@@ -24,9 +23,8 @@ blueprints:
 
 harness:
   entrypoint: HARNESS.md
+  # Consumer state CLI version is written from the CLI package ./VERSION at install/update.
   managed: true
-  # Written into consumer state from ./VERSION at install/update time.
-  version_file: VERSION
   commands:
     - start.md
     - review.md

@@ -18,8 +18,8 @@ export BLUEPRINT_ASSETS_ROOT="$(pwd)"
 Orientation:
 
 1. [README.md](README.md) — how packs flow into the CLI
-2. [`catalog.yaml`](catalog.yaml) — published pack versions
-3. `packs/<name>/pack.yaml` — per-pack semver and `cli_compat`
+2. `packs/<name>/pack.yaml` — **pack semver SoT** (`version`, `cli_compat`)
+3. [`catalog.yaml`](catalog.yaml) — published index (must match pack.yaml on release)
 4. [docs/skills.md](docs/skills.md) — skill inventory
 5. [docs/standards/skill-naming.md](docs/standards/skill-naming.md) — required naming gate before new skills
 

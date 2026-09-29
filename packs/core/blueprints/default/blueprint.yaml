@@ -1,5 +1,5 @@
 name: default
-# Tracks package VERSION (./VERSION) — do not hardcode a semver here.
+# Tracks pack semver via packs/<name>/pack.yaml — do not hardcode a semver here.
 extends: null
 description: Core shared agent harness — memory protocol, planning, safety, docs.
 

@@ -8,7 +8,7 @@ contents:
   - templates/
   - blueprints/
   - manifest.yaml
-  - VERSION
+  - pack.yaml
 provides:
   harness: true
   templates: true

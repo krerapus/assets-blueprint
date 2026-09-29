@@ -1,5 +1,5 @@
 name: product
-# Tracks package VERSION (./VERSION) — do not hardcode a semver here.
+# Tracks pack semver via packs/<name>/pack.yaml — do not hardcode a semver here.
 extends: default
 description: Product discovery profile — planning harness plus PRD/ADR templates.
 
