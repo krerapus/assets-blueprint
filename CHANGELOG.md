@@ -11,23 +11,25 @@ Pack versions are tracked per pack in `catalog.yaml` / `packs/*/pack.yaml`. This
 
 ### Added
 
-- Root `CHANGELOG.md` (Keep a Changelog) for pack/catalog release notes
-
 ### Changed
 
-- Docs architecture cleanup: slim README (link CLI architecture-split), PROPOSAL marked Accepted (Wave 1), remove obsolete CLI skills-mirror wording
-- Drop redundant `packs/core/VERSION`; pack semver SoT is `pack.yaml` (keep `catalog.yaml` in sync for publish)
+### Fixed
 
-## [1.5.2] - 2026-09-26
+## [1.5.2] - 2026-09-29
 
 ### Added
 
+- Root `CHANGELOG.md` (Keep a Changelog) for pack/catalog release notes
 - Assets pre-release workflow and release-workflow docs for human-triggered pack publishes
 - Catalog version check helper for release packaging
+- Skills inventory as Skill / Intent / Notes tables; 🟦 marks Blueprint-original skills
 
 ### Changed
 
 - Assets release pipeline aligned with CLI two-step pre-release → production flow
+- Docs architecture cleanup: slim README (link CLI architecture-split), PROPOSAL marked Accepted (Wave 1)
+- Drop redundant `packs/core/VERSION`; pack semver SoT is `pack.yaml` (keep `catalog.yaml` in sync for publish)
+- Clearer Assets Pre-release/Release confirm errors when CLI vs pack version is confused
 
 [Unreleased]: https://github.com/krerapus/assets-blueprint/compare/core-v1.5.2...HEAD
 [1.5.2]: https://github.com/krerapus/assets-blueprint/releases/tag/core-v1.5.2
