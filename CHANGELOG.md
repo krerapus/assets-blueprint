@@ -11,11 +11,15 @@ Pack versions are tracked per pack in `catalog.yaml` / `packs/*/pack.yaml`. This
 
 ### Added
 
-### Changed
-
-### Fixed
+- `scripts/render-release-notes.sh` — compact GitHub Release notes from CHANGELOG `### Highlights` (wired into Assets Release / Pre-release)
 
 ## [1.5.2] - 2026-09-29
+
+### Highlights
+
+- Skills inventory clarified (🟦 = Blueprint-original)
+- Pack version SoT is `pack.yaml` (synced with `catalog.yaml`)
+- Human-triggered pack pre-release → production flow
 
 ### Added
 
