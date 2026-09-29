@@ -101,23 +101,21 @@ jobs:
 
           ASSET="dist/${PACK}-v${VER}.tar.gz"
           SUM="${ASSET}.sha256"
+          chmod +x scripts/render-release-notes.sh
+          ./scripts/render-release-notes.sh --kind assets --pack "$PACK" --version "$VER" \
+            --summary "Harness content pack: skills, profiles, templates, entrypoints." \
+            --out /tmp/assets-release-notes.md
+
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "$ASSET" "$SUM" --clobber
-            gh release edit "$TAG" --latest --prerelease=false --title "${PACK} ${VER}"
+            gh release edit "$TAG" --latest --prerelease=false \
+              --title "${PACK} ${VER}" \
+              --notes-file /tmp/assets-release-notes.md
           else
-            TESTED="${{ inputs.tested_pre_label }}"
-            if [[ -n "$TESTED" ]]; then
-              gh release create "$TAG" "$ASSET" "$SUM" \
-                --title "${PACK} ${VER}" \
-                --notes "Production pack release after pre-release testing (${TESTED})." \
-                --latest \
-                --verify-tag
-            else
-              gh release create "$TAG" "$ASSET" "$SUM" \
-                --title "${PACK} ${VER}" \
-                --generate-notes \
-                --latest \
-                --verify-tag
-            fi
+            gh release create "$TAG" "$ASSET" "$SUM" \
+              --title "${PACK} ${VER}" \
+              --notes-file /tmp/assets-release-notes.md \
+              --latest \
+              --verify-tag
           fi
           echo "Release $TAG OK"

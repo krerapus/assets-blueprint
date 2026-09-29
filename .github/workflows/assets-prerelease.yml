@@ -104,13 +104,20 @@ jobs:
           fi
           ASSET="dist/${PACK}-v${PRE}.tar.gz"
           SUM="${ASSET}.sha256"
+          chmod +x scripts/render-release-notes.sh
+          ./scripts/render-release-notes.sh --kind assets --pack "$PACK" --version "$VER" \
+            --pre-label "${PRE#"${VER}-"}" \
+            --out /tmp/assets-prerelease-notes.md
+
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "$ASSET" "$SUM" --clobber
-            gh release edit "$TAG" --prerelease --latest=false
+            gh release edit "$TAG" --prerelease --latest=false \
+              --title "${PACK} ${PRE} (pre-release)" \
+              --notes-file /tmp/assets-prerelease-notes.md
           else
             gh release create "$TAG" "$ASSET" "$SUM" \
               --title "${PACK} ${PRE} (pre-release)" \
-              --notes "Non-production pack for testing (base ${VER}). When ready, run **Assets Release** for ${PACK}-v${VER}." \
+              --notes-file /tmp/assets-prerelease-notes.md \
               --prerelease \
               --verify-tag
           fi
