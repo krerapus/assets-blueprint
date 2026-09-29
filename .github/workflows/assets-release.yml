@@ -59,7 +59,9 @@ jobs:
             exit 1
           fi
           if [[ "$CONFIRM" != "$VER" ]]; then
-            echo "error: confirm_version '$CONFIRM' does not match pack.yaml '$VER'" >&2
+            echo "error: confirm_version '$CONFIRM' != packs/${PACK}/pack.yaml version '$VER'" >&2
+            echo "       Assets packs are versioned independently of the CLI ./VERSION." >&2
+            echo "       Re-run with confirm_version=${VER} (see packs/${PACK}/pack.yaml)." >&2
             exit 1
           fi
           chmod +x scripts/check-catalog-version.sh

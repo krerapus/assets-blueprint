@@ -39,10 +39,12 @@ blueprint assets doctor
 ## How to update source
 
 1. Edit under `packs/<name>/`.
-2. Bump `packs/<name>/pack.yaml` (and `cli_compat` if needed).
-3. Update [`catalog.yaml`](catalog.yaml).
+2. Bump `version` (and `cli_compat` if needed) in `packs/<name>/pack.yaml` — **pack semver SoT**.
+3. Sync the same `version` / `release_asset` / `cli_compat` in [`catalog.yaml`](catalog.yaml) — **published index** the CLI downloads.
 4. Package: `./scripts/package-pack.sh core`
 5. Publish via [docs/release-workflow.md](docs/release-workflow.md).
+
+Do **not** keep a per-pack `VERSION` file; do **not** use CLI `./VERSION` as the pack version. Pack and catalog must match (`scripts/check-catalog-version.sh`).
 
 Do **not** commit `dist/` unless your process requires it.
 

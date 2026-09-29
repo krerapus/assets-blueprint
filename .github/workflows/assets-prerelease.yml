@@ -58,7 +58,9 @@ jobs:
           LABEL="${LABEL#v}"
           LABEL="${LABEL#-}"
           if [[ "$CONFIRM" != "$VER" ]]; then
-            echo "error: confirm_version '$CONFIRM' != pack.yaml '$VER'" >&2
+            echo "error: confirm_version '$CONFIRM' != packs/${PACK}/pack.yaml version '$VER'" >&2
+            echo "       Assets packs are versioned independently of the CLI ./VERSION." >&2
+            echo "       Re-run with confirm_version=${VER} (see packs/${PACK}/pack.yaml)." >&2
             exit 1
           fi
           if [[ ! "$LABEL" =~ ^[A-Za-z0-9][A-Za-z0-9.-]*$ ]]; then

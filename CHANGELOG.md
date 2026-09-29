@@ -16,6 +16,7 @@ Pack versions are tracked per pack in `catalog.yaml` / `packs/*/pack.yaml`. This
 ### Changed
 
 - Docs architecture cleanup: slim README (link CLI architecture-split), PROPOSAL marked Accepted (Wave 1), remove obsolete CLI skills-mirror wording
+- Drop redundant `packs/core/VERSION`; pack semver SoT is `pack.yaml` (keep `catalog.yaml` in sync for publish)
 
 ## [1.5.2] - 2026-09-26
 
