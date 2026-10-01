@@ -22,6 +22,8 @@ After `blueprint install`, skills project to `.cursor/skills/`, `.claude/skills/
 | 🟦 `generate-test-cases` | Change → Testiny CSV under `.testiny/` | Opt-in; never auto-run |
 | 🟦 `update-api-docs` | Sync FastAPI OpenAPI YAML + response examples with routers | Prefer `app.openapi()` re-export |
 | 🟦 `skill-creator` | Author new skills (triggers, assets, eval loops) | Authoring infra, not coding policy |
+| 🟦 `do` | User-facing `/do` outcome entry → Loop Engineering (discover → confirm → decide → execute → gate) | Opt-in (`disable-model-invocation`). Companions under skill folder. Doc: [loop-engineering.md](loop-engineering.md) |
+| 🟦 `grill-me` | Minimum-question requirement discovery → Requirement Contract in `PLANNING.md` | Used by `/do`; opt-in |
 
 ## Wave 1 (mattpocock/skills, MIT)
 

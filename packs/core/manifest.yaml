@@ -29,6 +29,7 @@ harness:
     - start.md
     - review.md
     - commit.md
+    - do.md
   rules:
     - safety-rules.mdc
     - task-execution.mdc
@@ -55,6 +56,8 @@ harness:
     - research-topic
     - build-prototype
     - teach-topic
+    - do
+    - grill-me
 
 agents:
   entrypoint: AGENTS.md
