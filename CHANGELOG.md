@@ -11,6 +11,7 @@ Pack versions are tracked per pack in `catalog.yaml` / `packs/*/pack.yaml`. This
 
 ### Added
 
+- Core **1.5.3**: `/do` + `grill-me` Loop Engineering (requirement discovery → confirm → Decision Engine → existing skills); doc `docs/loop-engineering.md`
 - `scripts/render-release-notes.sh` — compact GitHub Release notes from CHANGELOG `### Highlights` (wired into Assets Release / Pre-release)
 
 ## [1.5.2] - 2026-09-29

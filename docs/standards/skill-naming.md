@@ -104,6 +104,8 @@ These existing package skills are **vendored or established identities**. Do NOT
 | `i-have-adhd` | Vendored brand |
 | `skill-creator` | Meta authoring infrastructure |
 | `context-recall`, `task-execution`, `docs-style` | Established harness protocol names |
+| `do` | User-facing `/do` Loop Engineering entry (orchestrator identity) |
+| `grill-me` | Requirement-discovery playbook identity used by `/do` |
 
 When introducing a **new** skill that overlaps a grandfathered capability, prefer a standards-compliant action-first name rather than extending the exception list.
 
